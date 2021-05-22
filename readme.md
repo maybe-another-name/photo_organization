@@ -4,7 +4,9 @@
 
     python3.8 -m venv venv
     source venv/bin/activate
+    pip install wheel
     pip install exifread
+    pip install .
 
 ## General idea
 >Make filenames great again!
@@ -19,11 +21,8 @@ ex:
 
 ##### Duplicates?
 
-Datetime precision is to the second.  If that isn't sufficient, and filesizes differ, then a roman numeral suffix is applied to the date.  (If the filesizes are the same, the duplicate is discarded).
+Datetime precision is to the second.  If that isn't sufficient, and metadata differs, then an exception is raised.  (If the metadata is the same, the duplicate is ignored).
 
-ex:
-    2019_01_04__18_10_49__Apple__iPhone_XR.jpg
-    2019_01_04__18_10_49__i__Apple__iPhone_XR.jpg
 
 ##### Dashes vs underscores?
 
@@ -42,3 +41,18 @@ Generally more convenient to have the entire filename selected upon double click
 https://github.com/dbader/photosorter
 https://github.com/wting/exifrenamer/blob/master/exifrenamer.py
 https://github.com/ianare/exif-py
+
+
+## Issues
+
+* Detect if the destination file already exists
+** Only add the timestamp if there are duplicates?
+*** Keep timestamps so they are uniform
+** If file has same tags, then don't do anything...
+* Helpers for remounting filesystem to be write-able...
+* Concurrency (threading)
+** Take an entire folder, break it up into chunks, and send it to the queue
+* Logging
+* Typically complains about not having wheel on first go...
+* Improved duplicate handling (differing metadata with same timestamp - suffix?)
+* Support for checkpointing really large directories (keeping track of 'last file completed')
